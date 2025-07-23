@@ -137,10 +137,16 @@ function VirtualizedUserTable({ users }: { users: User[] }) {
                   }}
                   className='grid grid-cols-5 gap-4 px-4 py-3 hover:bg-gray-50 border-b border-gray-100'>
                   <div>
-                    <div className='text-sm font-medium text-gray-900'>
+                    <div
+                      title={`${user.firstName} ${user.lastName}`}
+                      className='text-sm font-medium truncate text-gray-900'>
                       {user.firstName} {user.lastName}
                     </div>
-                    <div className='text-sm text-gray-500'>{user.email}</div>
+                    <div
+                      title={`${user.email}`}
+                      className='text-sm truncate text-gray-500'>
+                      {user.email}
+                    </div>
                   </div>
                   <div>
                     <span className='text-sm capitalize text-gray-900'>
