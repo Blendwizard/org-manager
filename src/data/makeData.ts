@@ -58,15 +58,12 @@ const newOrganization = (index: number): Organization => {
   };
 };
 
-export function makeData(...lens: number[]) {
-  const makeDataLevel = (depth = 0): Organization[] => {
-    const len = lens[depth]!;
-    return range(len).map((d): Organization => {
-      return {
-        ...newOrganization(d),
-      };
-    });
-  };
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-  return makeDataLevel();
-}
+export const makeData = async (
+  count: number,
+  delayTime = 100
+): Promise<Organization[]> => {
+  await delay(delayTime);
+  return Array.from({ length: count }, (_, i) => newOrganization(i));
+};

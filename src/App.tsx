@@ -323,8 +323,26 @@ function OrganizationModal({ selectedOrg, onClose }: OrganizationModalProps) {
 
 function OrganizationTable() {
   const [orgSearchTerm, setOrgSearchTerm] = useState("");
-  const [data] = useState<Organization[]>(() => makeData(1000));
+  const [data, setData] = useState<Organization[]>([]);
   const [selectedOrg, setSelectedOrg] = useState<Organization | null>(null);
+
+  const [loading, setLoading] = useState(true);
+
+  React.useEffect(() => {
+    const loadData = async () => {
+      setLoading(true);
+      try {
+        const result = await makeData(1000, 1000);
+        setData(result);
+      } catch (error) {
+        console.error("Failed to load data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+  }, []);
 
   const columns = React.useMemo<Array<ColumnDef<Organization>>>(
     () => [
@@ -333,7 +351,11 @@ function OrganizationTable() {
         header: "Company",
         size: 320,
         cell: (info) => (
-          <span className='text-gray-700'>{info.getValue<string>()}</span>
+          <span
+            title={`${info.getValue<string>()}`}
+            className='text-gray-700 items-start truncate'>
+            {info.getValue<string>()}
+          </span>
         ),
       },
       {
@@ -341,7 +363,11 @@ function OrganizationTable() {
         header: "Admin",
         size: 300,
         cell: (info) => (
-          <span className='text-gray-700'>{info.getValue<string>()}</span>
+          <span
+            title={`${info.getValue<string>()}`}
+            className='text-gray-700 truncate'>
+            {info.getValue<string>()}
+          </span>
         ),
       },
       {
@@ -363,7 +389,8 @@ function OrganizationTable() {
       {
         accessorKey: "plan",
         header: "Plan",
-        size: 100,
+        size: 160,
+
         cell: (info) => (
           <span className='text-gray-700 capitalize'>
             {info.getValue<string>()}
@@ -407,6 +434,79 @@ function OrganizationTable() {
     estimateSize: () => 60,
     overscan: 20,
   });
+
+  if (loading) {
+    return (
+      <div className='px-6 py-6'>
+        <div className='bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden'>
+          {/* Search Bar - Disabled State */}
+          <div className='p-4 border-b border-gray-200 bg-gray-50'>
+            <div className='relative'>
+              <input
+                type='text'
+                placeholder='Search organizations by company, admin, plan...'
+                disabled
+                className='w-full pl-8 pr-4 py-2 border border-gray-300 text-gray-400 rounded-lg bg-gray-100 cursor-not-allowed'
+              />
+              <svg
+                className='absolute left-2.5 top-2.5 h-4 w-4 text-gray-300'
+                fill='none'
+                stroke='currentColor'
+                viewBox='0 0 24 24'>
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth={2}
+                  d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'
+                />
+              </svg>
+            </div>
+          </div>
+
+          {/* Table Header - Skeleton */}
+          <div className='bg-gray-50 border-b border-gray-200'>
+            <div className='flex'>
+              {[320, 300, 120, 180, 100].map((width, index) => (
+                <div
+                  key={index}
+                  style={{ width }}
+                  className='px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider'>
+                  <div className='h-4 bg-gray-200 rounded animate-pulse'></div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Loading Overlay */}
+          <div className='h-[600px] relative bg-gray-50/50'>
+            {/* Loading Spinner and Text */}
+            <div className='absolute inset-0 flex items-center justify-center bg-white/80 backdrop-blur-sm'>
+              <div className='text-center'>
+                {/* Loading Text */}
+                <div className='text-lg font-medium text-gray-700 mb-2'>
+                  Loading Organizations
+                </div>
+                <div className='text-sm text-gray-500'>
+                  Fetching data, please wait...
+                </div>
+
+                {/* Progress Dots */}
+                <div className='flex justify-center space-x-1 mt-4'>
+                  <div className='w-2 h-2 bg-grape-600 rounded-full animate-bounce'></div>
+                  <div
+                    className='w-2 h-2 bg-grape-600 rounded-full animate-bounce'
+                    style={{ animationDelay: "0.1s" }}></div>
+                  <div
+                    className='w-2 h-2 bg-grape-600 rounded-full animate-bounce'
+                    style={{ animationDelay: "0.2s" }}></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
