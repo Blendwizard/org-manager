@@ -46,14 +46,15 @@ const newUser = (index: number): User => {
 };
 
 const newOrganization = (index: number): Organization => {
+  const userCount = faker.number.int(1000);
   return {
     id: index + 1,
     companyName: faker.company.name(),
     adminName: faker.person.fullName(),
-    userCount: faker.number.int(100),
+    userCount,
     invitationsRemaining: faker.number.int(200),
     plan: faker.helpers.shuffle(["pro", "basic", "enterprise"])[0],
-    users: range(100).map((u) => ({ ...newUser(u) })),
+    users: range(userCount).map((u) => ({ ...newUser(u) })),
   };
 };
 
