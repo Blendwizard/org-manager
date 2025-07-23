@@ -90,7 +90,7 @@ function VirtualizedUserTable({ users }: { users: User[] }) {
       </div>
 
       {/* Table Header */}
-      <div className='bg-gray-50 grid grid-cols-5 gap-4 px-4 py-3 border-b border-gray-200'>
+      <div className='bg-gray-50 grid grid-cols-5 gap-4 px-4 py-3 border-b border-gray-200 '>
         <div className='text-xs font-medium text-gray-500 uppercase tracking-wider'>
           User
         </div>
@@ -134,6 +134,8 @@ function VirtualizedUserTable({ users }: { users: User[] }) {
                     width: "100%",
                     height: `${virtualRow.size}px`,
                     transform: `translateY(${virtualRow.start}px)`,
+                    justifyContent: "center",
+                    alignItems: "center",
                   }}
                   className='grid grid-cols-5 gap-4 px-4 py-3 hover:bg-gray-50 border-b border-gray-100'>
                   <div>
@@ -232,7 +234,7 @@ function OrganizationModal({ selectedOrg, onClose }: OrganizationModalProps) {
               <div className='bg-gray-50 rounded-lg p-4'>
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
                   <div>
-                    <label className='block text-sm font-medium text-gray-500 mb-1'>
+                    <label className='block text-sm font-medium text-grape-500 mb-1'>
                       Company Name
                     </label>
                     <p className='text-gray-900 font-medium'>
@@ -353,7 +355,7 @@ function OrganizationTable() {
         cell: (info) => (
           <span
             title={`${info.getValue<string>()}`}
-            className='text-gray-700 items-start truncate'>
+            className='text-grape-600 items-start truncate'>
             {info.getValue<string>()}
           </span>
         ),
