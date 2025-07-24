@@ -122,8 +122,8 @@ export function OrganizationTable() {
   const virtualizer = useVirtualizer({
     count: rows.length,
     getScrollElement: () => parentRef.current,
-    estimateSize: () => 60,
-    overscan: 20,
+    estimateSize: () => 80,
+    overscan: 50,
   });
 
   if (loading) {
@@ -169,7 +169,7 @@ export function OrganizationTable() {
           </div>
 
           {/* Loading Overlay */}
-          <div className='h-[600px] relative bg-gray-50/50'>
+          <div className='h-[800px] relative bg-gray-50/50'>
             {/* Loading Spinner and Text */}
             <div className='absolute inset-0 flex items-center justify-center bg-white/80 backdrop-blur-sm'>
               <div className='text-center'>
@@ -269,7 +269,7 @@ export function OrganizationTable() {
           </div>
 
           {/* Virtualized Table Body */}
-          <div ref={parentRef} className='h-[600px] overflow-auto'>
+          <div ref={parentRef} className='h-[800px] overflow-auto'>
             {rows.length === 0 ? (
               <div className='flex items-center justify-center h-full text-gray-500'>
                 {orgSearchTerm
